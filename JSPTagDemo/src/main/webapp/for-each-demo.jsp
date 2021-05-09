@@ -17,10 +17,13 @@
 %>
 
 <body>
-	<c:forEach var="thisCity" items="${cityList}">
-
-		${thisCity} <br>
+	<!-- loop over the array cities[] -->
 	
+	<c:forEach var="thisCity" items="${cityList}">
+		
+		<!-- displays each city on a new line -->
+		${thisCity} <br>
+
 	</c:forEach>
 </body>
 </html>
