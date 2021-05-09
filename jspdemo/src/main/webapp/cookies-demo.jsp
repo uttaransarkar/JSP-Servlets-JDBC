@@ -16,6 +16,7 @@
 	
 	myCookie.setMaxAge(60*60*24*365);
 	
+	//send the cookie to browser
 	response.addCookie(myCookie);
 %>
 
