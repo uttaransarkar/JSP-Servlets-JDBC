@@ -27,6 +27,7 @@
 <title>Students Display</title>
 </head>
 <body>
+<h3>Choose tag Demo</h3>
 
 <table border="1">
 <tr>

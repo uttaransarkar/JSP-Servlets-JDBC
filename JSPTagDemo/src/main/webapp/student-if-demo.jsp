@@ -27,6 +27,7 @@
 <title>Students Display</title>
 </head>
 <body>
+<h3>If tag Demo</h3>
 
 <table border="1">
 <tr>
