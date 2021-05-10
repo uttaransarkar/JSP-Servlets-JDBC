@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<h3>JSTL Functions Demo</h3>
+
 <c:set var="data" value="Hey there!"></c:set>
 
 <!-- fn:length() for length of string -->
