@@ -45,16 +45,54 @@ public class ControllerStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		//we will list students in MVC way, so we will use a helper method for the same
+		
 		try {
-			listStudents(request, response);
+			//Read the "command" parameter from form
+			String opCommand = request.getParameter("command");
 			
+			//if command is null, then list students
+			if (opCommand == null) 
+				opCommand = "list students";
+			
+			//go to the appropriate method according to the opCommand
+			switch(opCommand) {
+				case "list command": 
+					//we will list students in MVC way, so we will use a helper method for the same
+					listStudents(request, response);
+					break;
+					
+				case "ADD":
+					addStudent(request, response);
+					break;
+					
+				default:
+					listStudents(request, response);
+			
+			}
+					
 		} catch (Exception e) {
 			throw new ServletException();
 		}
 	
 	}
+
+	private void addStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//reading student info from form
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		
+		//creating new Student object
+		Student newStudent = new Student(firstName, lastName, email);
+		
+		//adding new student to DB
+		studentDbModel.addStudent(newStudent);
+		
+		//redirecting to page with updated list of students
+		listStudents(request, response);
+	}
+
 
 	private void listStudents(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -70,5 +108,7 @@ public class ControllerStudentServlet extends HttpServlet {
 		//forward data to jsp
 		dispatcher.forward(request, response);
 	}
+	
+	
 
 }

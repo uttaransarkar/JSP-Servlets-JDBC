@@ -1,6 +1,7 @@
 package com.jsp.web.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -76,6 +77,36 @@ public class StudentDbModel {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}		
+	}
+
+	public void addStudent(Student newStudent) throws Exception{
+		
+		//adding student to DB
+		Connection conn = null;
+		PreparedStatement prepstm = null;
+		
+		try {
+			//get connection
+			conn = dataSource.getConnection();
+			
+			//creating sql statement for insert
+			String sql = "insert into student (first_name, last_name, email) "
+					+ "values (?, ?, ?)";
+			
+			prepstm = conn.prepareStatement(sql);
+			
+			//setting parameter values for the student
+			prepstm.setString(1, newStudent.getFirstName());
+			prepstm.setString(2, newStudent.getLastName());
+			prepstm.setString(3, newStudent.getEmail());
+			
+			//executing the insert statement
+			prepstm.execute();
+			
+		} finally {
+			//closing jdbc objects
+			close(conn, prepstm, null);
 		}		
 	}	
 

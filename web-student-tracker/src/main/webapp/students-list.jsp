@@ -19,11 +19,19 @@
 	<div id="header">
 		<h2>MyTech University</h2>
 	</div>
+</div>
 	
 	
 	
 	<div id="container">
 		<div id="content">
+			
+			<!-- button: add student, onclick will open up the add student jsp page-->
+			<input type="button" value="Add Student" 
+					onclick="window.location.href='student-add-form.jsp'; return false"
+					class="add-student-button" 
+			/>
+		
 			<table>
 				<tr>
 					<th>First Name</th>
@@ -43,7 +51,6 @@
 			</table>
 		</div>
 	</div>
-</div>
 
 </body>
 </html>
