@@ -56,7 +56,7 @@ public class ControllerStudentServlet extends HttpServlet {
 			
 			//go to the appropriate method according to the opCommand
 			switch(opCommand) {
-				case "list command": 
+				case "list students": 
 					//we will list students in MVC way, so we will use a helper method for the same
 					listStudents(request, response);
 					break;
@@ -64,17 +64,63 @@ public class ControllerStudentServlet extends HttpServlet {
 				case "ADD":
 					addStudent(request, response);
 					break;
+				
+				case "LOAD":
+					loadStudentInfo(request, response);
+					break;
+					
+				case "UPDATE":
+					updateStudent(request, response);
+					break;
 					
 				default:
-					listStudents(request, response);
-			
+					listStudents(request, response);		
 			}
 					
 		} catch (Exception e) {
-			throw new ServletException();
+			throw new ServletException(e);
 		}
 	
 	}
+
+	private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		//update student info in DB
+		//reading student info from form
+		int id = Integer.parseInt(request.getParameter("studentId"));
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		
+		//creating new Student object
+		Student upStudent = new Student(id, firstName, lastName, email); 
+		
+		//updating the DB
+		studentDbModel.updateStudent(upStudent);
+		
+		//redirecting to updated list of students
+		listStudents(request, response);
+		
+	}
+
+
+	private void loadStudentInfo(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		//read the student id from url
+		int studentId = Integer.parseInt(request.getParameter("studentID"));
+		
+		//get student data from DB
+		Student loadedStudent = studentDbModel.loadStudentInfo(studentId);
+		
+		//set student data as attribute
+		request.setAttribute("loaded_student", loadedStudent);
+		
+		//forward data to jsp page i.e student-update-form.jsp
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/student-update-form.jsp");
+		
+		dispatcher.forward(request, response);
+	}
+
 
 	private void addStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

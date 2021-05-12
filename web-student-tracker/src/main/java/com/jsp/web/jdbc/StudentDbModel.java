@@ -3,6 +3,7 @@ package com.jsp.web.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class StudentDbModel {
 			if(res != null) 
 				res.close();
 			if(stm != null)
-				res.close();
+				stm.close();
 			if(conn != null)
 				conn.close();			//becomes free in the connection pool
 			
@@ -108,6 +109,81 @@ public class StudentDbModel {
 			//closing jdbc objects
 			close(conn, prepstm, null);
 		}		
-	}	
+	}
 
+	public Student loadStudentInfo(int studentId) throws Exception{
+		//loading student info from DB
+		Student loadStudent = null;
+		Connection conn = null;
+		PreparedStatement prepstm = null;
+		ResultSet res = null;
+		
+		try {
+			//get connection
+			conn = dataSource.getConnection();
+			
+			//creating sql statement for loading student row
+			String sql = "select * from student where id=?";
+						
+			//creating prepared statement
+			prepstm = conn.prepareStatement(sql);
+			
+			//setting params for the statement
+			prepstm.setInt(1, studentId);
+			
+			//executing the statement
+			res = prepstm.executeQuery();
+			
+			//retrieving data from result set and storing in student object fields
+			if(res.next()) {
+				String firstName = res.getString("first_name");
+				String lastName = res.getString("last_name");
+				String email = res.getString("email");
+
+				//initialize student fields using constructor with id
+				loadStudent = new Student(studentId, firstName, lastName, email);
+			} else {
+				throw new Exception("couls not find student id: " + studentId);
+			}
+		
+		} finally {
+			//cleaning JDBC objects
+			close(conn, prepstm, res);		
+		}
+		
+		return loadStudent;
+	}
+
+	public void updateStudent(Student upStudent) throws Exception {
+		
+		//update the student info in DB
+		Connection conn = null;
+		PreparedStatement prepstm = null;
+		try {
+			//get connection
+			conn = dataSource.getConnection();
+			
+			//creating sql statement for loading student row
+			String sql = "update student set first_name=?, last_name=?, email=? "
+					+ "where id=?";
+						
+			//creating prepared statement
+			prepstm = conn.prepareStatement(sql);
+			
+			//setting params for the statement
+			prepstm.setString(1, upStudent.getFirstName());
+			prepstm.setString(2, upStudent.getLastName());
+			prepstm.setString(3, upStudent.getEmail());
+			prepstm.setInt(4, upStudent.getId());
+
+			
+			//executing the statement
+			prepstm.execute();
+		} finally {
+			
+			//cleaning JDBC objects
+			close(conn, prepstm, null);
+		}
+	
+	}
 }

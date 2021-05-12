@@ -37,14 +37,32 @@
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Email</th>
+					<th>Action</th>
 				</tr>
 				
 				<c:forEach var="thisStudent" items="${students_list}">
-				
+					
+					<!-- setting up link for update student using c:url tag -->
+					
+					<c:url var="studentUpdateLink" value="ControllerStudentServlet">		
+						<c:param name="command" value="LOAD"></c:param>
+						<c:param name="studentID" value="${thisStudent.id}"></c:param>						
+					</c:url>
+					
+					<!-- setting up link for delete student using c:url tag -->
+					
+					<c:url var="studentDeleteLink" value="ControllerStudentServlet">
+						<c:param name="command" value="DELETE"></c:param>
+						<c:param name="studentID" value="${thisStudent.id}"></c:param>
+					</c:url>
+					
 					<tr>
 						<td>${thisStudent.firstName}</td>
 						<td>${thisStudent.lastName}</td>
 						<td>${thisStudent.email}</td>
+						<td>
+						<a href="${studentUpdateLink}">UPDATE</a> | <a href="${studentDeleteLink}">DELETE</a>
+						</td>
 					</tr>	
 				
 				</c:forEach>
