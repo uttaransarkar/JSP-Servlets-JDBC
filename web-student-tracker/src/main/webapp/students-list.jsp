@@ -61,7 +61,10 @@
 						<td>${thisStudent.lastName}</td>
 						<td>${thisStudent.email}</td>
 						<td>
-						<a href="${studentUpdateLink}">UPDATE</a> | <a href="${studentDeleteLink}">DELETE</a>
+						<!-- onCLick for DELETE is javascript code to display a user prompt -->
+						<a href="${studentUpdateLink}">UPDATE</a> | 
+						<a href="${studentDeleteLink}" onclick="if(!(confirm('Delete this student entry?'))) return false">
+						DELETE</a>
 						</td>
 					</tr>	
 				

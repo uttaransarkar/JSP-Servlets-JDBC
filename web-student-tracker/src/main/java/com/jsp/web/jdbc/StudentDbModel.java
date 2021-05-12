@@ -186,4 +186,30 @@ public class StudentDbModel {
 		}
 	
 	}
+
+	public void deleteStudent (int id) throws Exception {
+		//delete the student info in DB
+		Connection conn = null;
+		PreparedStatement prepstm = null;
+		try {
+			//get connection
+			conn = dataSource.getConnection();
+			
+			//creating sql statement for loading student row
+			String sql = "delete from student where id=?";
+			
+			//creating prepared statement
+			prepstm = conn.prepareStatement(sql);
+			
+			//setting params for the statement
+			prepstm.setInt(1, id);
+			
+			//execute the sql statement
+			prepstm.execute();
+			
+		} finally {
+			//cleaning JDBC objects
+			close(conn, prepstm, null);
+		}
+	}
 }
