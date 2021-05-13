@@ -143,7 +143,7 @@ public class StudentDbModel {
 				//initialize student fields using constructor with id
 				loadStudent = new Student(studentId, firstName, lastName, email);
 			} else {
-				throw new Exception("couls not find student id: " + studentId);
+				throw new Exception("could not find student id: " + studentId);
 			}
 		
 		} finally {

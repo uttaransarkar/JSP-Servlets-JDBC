@@ -61,10 +61,6 @@ public class ControllerStudentServlet extends HttpServlet {
 					listStudents(request, response);
 					break;
 					
-				case "ADD":
-					addStudent(request, response);
-					break;
-				
 				case "LOAD":
 					loadStudentInfo(request, response);
 					break;
@@ -85,6 +81,33 @@ public class ControllerStudentServlet extends HttpServlet {
 			throw new ServletException(e);
 		}
 	
+	}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//adding student to DB
+		try {
+			
+			String opCommand = request.getParameter("command");
+			
+			switch(opCommand) {
+				
+				case "ADD":
+					addStudent(request, response);
+					break;
+				
+				default:
+					listStudents(request, response);
+			
+			}
+			
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+		
 	}
 
 	private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -136,7 +159,7 @@ public class ControllerStudentServlet extends HttpServlet {
 		request.setAttribute("loaded_student", loadedStudent);
 		
 		//forward data to jsp page i.e student-update-form.jsp
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/student-update-form.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/student-update-form.jsp?command=list students");
 		
 		dispatcher.forward(request, response);
 	}
@@ -156,7 +179,8 @@ public class ControllerStudentServlet extends HttpServlet {
 		studentDbModel.addStudent(newStudent);
 		
 		//redirecting to page with updated list of students
-		listStudents(request, response);
+		//listStudents(request, response);
+		response.sendRedirect(request.getContextPath() + "/ControllerStudentServlet?command=");
 	}
 
 

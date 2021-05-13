@@ -21,7 +21,7 @@
 <div id="container">
 	<h3>Add Student</h3>	
 	
-	<form action="ControllerStudentServlet" method="GET">
+	<form action="ControllerStudentServlet" method="POST">
 		
 		<!-- this won't be visible to user, but we will use command to determine whether to ADD or DELETE from database -->
 		<input type="hidden" name="command" value="ADD">
